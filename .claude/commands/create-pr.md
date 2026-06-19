@@ -1,12 +1,14 @@
 ---
-description: Run npm run checks, fix everything to 100% (using parallel agents), then commit and push
-argument-hint: "[optional PR title or notes]"
+description: Run npm run checks, fix everything to 100% (using parallel agents), then commit and push to main
+argument-hint: "[optional commit notes]"
 allowed-tools: Bash, Read, Edit, Write, Grep, Glob, Agent, TodoWrite
 ---
 
 # /create-pr
 
-Goal: get `npm run checks` to pass **completely clean** (react-doctor, ESLint with `--max-warnings 0`, and Jest with full coverage), then commit and push the branch and open a PR.
+Goal: get `npm run checks` to pass **completely clean** (react-doctor, ESLint with `--max-warnings 0`, and Jest with full coverage), then commit and push directly to `main`.
+
+> This is a solo project — we push straight to `main`, no feature branch and no pull request.
 
 Optional user notes for this run: $ARGUMENTS
 
@@ -40,20 +42,15 @@ Optional user notes for this run: $ARGUMENTS
 
 4. **Re-run and iterate.** After agents report back, run `npm run checks` again. Repeat triage → fix → re-run until **all three gates are fully green**. Do not stop early or declare success on a partial pass — show the final clean output.
 
-5. **Commit & push.**
+5. **Commit & push to main.**
    - Review `git status` and `git diff` so you know exactly what changed.
-   - If on the default branch (`main`), create a feature branch first (e.g. `fix/checks-green` or a name derived from $ARGUMENTS).
-   - Stage and commit with a clear message describing the work. End the commit message with:
+   - Make sure you are on `main` (`git checkout main` if not). Do **not** create a feature branch.
+   - Stage and commit with a clear message describing the work (use $ARGUMENTS for context if provided). End the commit message with:
      ```
      Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>
      ```
-   - Push with `-u` to set upstream.
-
-6. **Open the PR.** Use `gh pr create` with a concise title (use $ARGUMENTS if provided) and a body summarizing the changes and confirming all checks pass. End the PR body with:
-   ```
-   🤖 Generated with [Claude Code](https://claude.com/claude-code)
-   ```
-   Print the PR URL when done.
+   - Push directly to main: `git push origin main`.
+   - Print the pushed commit hash and a one-line summary when done. No PR is created.
 
 ## Guardrails
 
